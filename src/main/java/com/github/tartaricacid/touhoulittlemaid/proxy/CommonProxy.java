@@ -5,6 +5,7 @@ import com.github.tartaricacid.touhoulittlemaid.api.LittleMaidAPI;
 import com.github.tartaricacid.touhoulittlemaid.api.util.ItemDefinition;
 import com.github.tartaricacid.touhoulittlemaid.bauble.*;
 import com.github.tartaricacid.touhoulittlemaid.block.muiltblock.MuiltBlockAltar;
+import com.github.tartaricacid.touhoulittlemaid.capability.HasGuideSerializer;
 import com.github.tartaricacid.touhoulittlemaid.capability.MaidNumSerializer;
 import com.github.tartaricacid.touhoulittlemaid.capability.PowerSerializer;
 import com.github.tartaricacid.touhoulittlemaid.client.resources.pojo.CustomModelPack;
@@ -66,7 +67,7 @@ import static com.github.tartaricacid.touhoulittlemaid.util.DrawCalculation.read
 
 public class CommonProxy {
     public static final Gson GSON = new GsonBuilder().registerTypeAdapter(ResourceLocation.class, new ResourceLocation.Serializer()).create();
-    public static final ScriptEngine NASHORN = new ScriptEngineManager(null).getEngineByName("nashorn");
+    public static final ScriptEngine NASHORN = new ScriptEngineManager().getEngineByName("nashorn");
     /**
      * 服务端用模型列表，
      * 这个只会在服务器启动时候读取默认原版的列表，
@@ -103,6 +104,7 @@ public class CommonProxy {
         NetworkRegistry.INSTANCE.registerGuiHandler(TouhouLittleMaid.INSTANCE, new MaidGuiHandler());
         PowerSerializer.register();
         MaidNumSerializer.register();
+        HasGuideSerializer.register();
         CustomSpellCardManger.onCustomSpellCardReload();
         if (Loader.isModLoaded("patchouli")) {
             MultiblockRegistry.init();
@@ -138,6 +140,7 @@ public class CommonProxy {
         LittleMaidAPI.registerTask(new TaskMilk());
         LittleMaidAPI.registerTask(new TaskTorch());
         LittleMaidAPI.registerTask(new TaskFeedAnimal());
+        LittleMaidAPI.registerTask(new TaskExtinguishing());
 
         // 注册 FarmHandler 和 FeedHandler
         LittleMaidAPI.registerFarmHandler(new VanillaNormalFarmHandler());
@@ -208,6 +211,10 @@ public class CommonProxy {
         EntityRegistry.registerModEntity(new ResourceLocation(TouhouLittleMaid.MOD_ID, "entity.item.backpack"), EntityBackpack.class, "touhou_little_maid.backpack", 9, TouhouLittleMaid.INSTANCE, 80, 10, true);
         EntityRegistry.registerModEntity(new ResourceLocation(TouhouLittleMaid.MOD_ID, "entity.item.trolley_audio"), EntityTrolleyAudio.class, "touhou_little_maid.trolley_audio", 10, TouhouLittleMaid.INSTANCE, 80, 10, true);
         EntityRegistry.registerModEntity(new ResourceLocation(TouhouLittleMaid.MOD_ID, "entity.item.maid_vehicle"), EntityMaidVehicle.class, "touhou_little_maid.maid_vehicle", 11, TouhouLittleMaid.INSTANCE, 80, 10, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(TouhouLittleMaid.MOD_ID, "entity.item.scarecrow"), EntityScarecrow.class, "touhou_little_maid.scarecrow", 12, TouhouLittleMaid.INSTANCE, 80, 10, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(TouhouLittleMaid.MOD_ID, "entity.item.portable_audio"), EntityPortableAudio.class, "touhou_little_maid.portable_audio", 13, TouhouLittleMaid.INSTANCE, 80, 10, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(TouhouLittleMaid.MOD_ID, "entity.item.extinguishing_agent"), EntityExtinguishingAgent.class, "touhou_little_maid.extinguishing_agent", 14, TouhouLittleMaid.INSTANCE, 80, 10, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(TouhouLittleMaid.MOD_ID, "entity.item.throw_power_point"), EntityThrowPowerPoint.class, "touhou_little_maid.throw_power_point", 15, TouhouLittleMaid.INSTANCE, 80, 10, true);
     }
 
     private void registerEntitySpawns() {
@@ -241,6 +248,10 @@ public class CommonProxy {
         INSTANCE.registerMessage(SetCompassModeMessage.Handler.class, SetCompassModeMessage.class, 19, Side.SERVER);
         INSTANCE.registerMessage(SendNameTagMessage.Handler.class, SendNameTagMessage.class, 20, Side.SERVER);
         INSTANCE.registerMessage(ClearMaidPosMessage.Handler.class, ClearMaidPosMessage.class, 21, Side.SERVER);
+        INSTANCE.registerMessage(SetMaidRidingMessage.Handler.class, SetMaidRidingMessage.class, 22, Side.SERVER);
+        INSTANCE.registerMessage(SetScarecrowDataMessage.Handler.class, SetScarecrowDataMessage.class, 23, Side.SERVER);
+        INSTANCE.registerMessage(PortableAudioMessageToServer.Handler.class, PortableAudioMessageToServer.class, 24, Side.SERVER);
+        INSTANCE.registerMessage(PortableAudioMessageToClient.Handler.class, PortableAudioMessageToClient.class, 25, Side.CLIENT);
     }
 
     /**

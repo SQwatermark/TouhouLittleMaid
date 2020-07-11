@@ -3,6 +3,8 @@ package com.github.tartaricacid.touhoulittlemaid.client.gui.inventory;
 import com.github.tartaricacid.touhoulittlemaid.TouhouLittleMaid;
 import com.github.tartaricacid.touhoulittlemaid.api.IMaidTask;
 import com.github.tartaricacid.touhoulittlemaid.api.LittleMaidAPI;
+import com.github.tartaricacid.touhoulittlemaid.client.download.InfoGetManager;
+import com.github.tartaricacid.touhoulittlemaid.client.download.pojo.DownloadInfo;
 import com.github.tartaricacid.touhoulittlemaid.client.event.KappaCompassRenderEvent;
 import com.github.tartaricacid.touhoulittlemaid.client.gui.download.ResourcesDownloadGui;
 import com.github.tartaricacid.touhoulittlemaid.client.gui.skin.MaidHataSelect;
@@ -12,10 +14,7 @@ import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.github.tartaricacid.touhoulittlemaid.inventory.MaidMainContainer;
 import com.github.tartaricacid.touhoulittlemaid.item.ItemKappaCompass;
 import com.github.tartaricacid.touhoulittlemaid.network.MaidGuiHandler;
-import com.github.tartaricacid.touhoulittlemaid.network.simpleimpl.ClearMaidPosMessage;
-import com.github.tartaricacid.touhoulittlemaid.network.simpleimpl.MaidHomeModeMessage;
-import com.github.tartaricacid.touhoulittlemaid.network.simpleimpl.MaidPickupModeMessage;
-import com.github.tartaricacid.touhoulittlemaid.network.simpleimpl.SwitchMaidGuiMessage;
+import com.github.tartaricacid.touhoulittlemaid.network.simpleimpl.*;
 import com.github.tartaricacid.touhoulittlemaid.network.simpleimpl.effect.EffectRequest;
 import com.github.tartaricacid.touhoulittlemaid.proxy.CommonProxy;
 import com.google.common.collect.Lists;
@@ -45,6 +44,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -62,6 +62,7 @@ public abstract class AbstractMaidGuiContainer extends GuiContainer {
     private static final ResourceLocation SIDE = new ResourceLocation(TouhouLittleMaid.MOD_ID, "textures/gui/inventory_side.png");
     private static final ResourceLocation ICON = new ResourceLocation(TouhouLittleMaid.MOD_ID, "textures/gui/inventory_icon.png");
     private static ItemStack BARRIER = new ItemStack(Blocks.BARRIER);
+    private static ItemStack SADDLE = new ItemStack(Items.SADDLE);
     private static ScheduledExecutorService timer;
     private static int taskPageIndex;
     protected MaidMainContainer container;
@@ -180,11 +181,13 @@ public abstract class AbstractMaidGuiContainer extends GuiContainer {
         this.buttonList.add(new GuiButton(BUTTON.DOWNLOAD_RESOURCES.ordinal(), i + 26, j + 167, 20, 20, ""));
         // 显示坐标按钮
         this.buttonList.add(new GuiButton(BUTTON.SHOW_POS.ordinal(), i + 47, j + 167, 20, 20, ""));
-        // 清除界面按钮
+        // 清除坐标按钮
         this.buttonList.add(new GuiButton(BUTTON.CLEAR_POS.ordinal(), i + 68, j + 167, 20, 20, ""));
+        // 骑乘设置按钮
+        this.buttonList.add(new GuiButton(BUTTON.RIDING_SET.ordinal(), i + 89, j + 167, 20, 20, ""));
 
         // 占位按钮
-        for (int k = 2; k < 6; k++) {
+        for (int k = 3; k < 6; k++) {
             this.buttonList.add(new GuiButton(405 + k, i + 47 + 21 * k, j + 167, 20, 20, ""));
         }
     }
@@ -248,7 +251,15 @@ public abstract class AbstractMaidGuiContainer extends GuiContainer {
         }
 
         if (button.id == BUTTON.DOWNLOAD_RESOURCES.ordinal()) {
-            mc.addScheduledTask(() -> mc.displayGuiScreen(new ResourcesDownloadGui()));
+            List<DownloadInfo> downloadInfoList;
+            int page = ResourcesDownloadGui.getCurrentPage();
+            if (page == 0) {
+                downloadInfoList = InfoGetManager.DOWNLOAD_INFO_LIST_ALL;
+            } else {
+                DownloadInfo.TypeEnum typeEnum = DownloadInfo.TypeEnum.getTypeByIndex(page - 1);
+                downloadInfoList = InfoGetManager.getTypedDownloadInfoList(typeEnum);
+            }
+            mc.addScheduledTask(() -> mc.displayGuiScreen(new ResourcesDownloadGui(downloadInfoList)));
             return;
         }
 
@@ -260,6 +271,11 @@ public abstract class AbstractMaidGuiContainer extends GuiContainer {
         if (button.id == BUTTON.CLEAR_POS.ordinal()) {
             KappaCompassRenderEvent.setTmpDisplay(Lists.newArrayList(), ItemKappaCompass.Mode.NONE);
             CommonProxy.INSTANCE.sendToServer(new ClearMaidPosMessage(maid.getUniqueID()));
+            return;
+        }
+
+        if (button.id == BUTTON.RIDING_SET.ordinal()) {
+            CommonProxy.INSTANCE.sendToServer(new SetMaidRidingMessage(maid.getUniqueID()));
             return;
         }
 
@@ -324,9 +340,10 @@ public abstract class AbstractMaidGuiContainer extends GuiContainer {
         drawModalRectWithCustomSizedTexture(i + 29, j + 170, 14, 0, 14, 14, 256, 256);
         drawModalRectWithCustomSizedTexture(i + 50, j + 170, 28, 0, 14, 14, 256, 256);
         drawModalRectWithCustomSizedTexture(i + 71, j + 170, 42, 0, 14, 14, 256, 256);
+        drawItemStack(SADDLE, i + 48 + 21 * 2, j + 168);
 
         // 占位按钮图标
-        for (int k = 2; k < 6; k++) {
+        for (int k = 3; k < 6; k++) {
             drawItemStack(BARRIER, i + 49 + 21 * k, j + 169);
         }
 
@@ -437,6 +454,13 @@ public abstract class AbstractMaidGuiContainer extends GuiContainer {
         yInRange = (j + 167) < mouseY && mouseY < (j + 187);
         if (xInRange && yInRange) {
             this.drawHoveringText(I18n.format("gui.touhou_little_maid.button.clear_pos"), mouseX, mouseY);
+        }
+
+        // 清除坐标
+        xInRange = (i + 89) < mouseX && mouseX < (i + 108);
+        yInRange = (j + 167) < mouseY && mouseY < (j + 187);
+        if (xInRange && yInRange) {
+            this.drawHoveringText(I18n.format("gui.touhou_little_maid.button.riding_set"), mouseX, mouseY);
         }
 
         drawCustomTooltips(mouseX, mouseY, partialTicks);
@@ -572,7 +596,9 @@ public abstract class AbstractMaidGuiContainer extends GuiContainer {
         // 显示坐标按钮
         SHOW_POS(MaidGuiHandler.OTHER_GUI.NONE.getId()),
         // 清除坐标按钮
-        CLEAR_POS(MaidGuiHandler.OTHER_GUI.NONE.getId());
+        CLEAR_POS(MaidGuiHandler.OTHER_GUI.NONE.getId()),
+        // 骑乘设置按钮
+        RIDING_SET(MaidGuiHandler.OTHER_GUI.NONE.getId());
 
         private int guiId;
 

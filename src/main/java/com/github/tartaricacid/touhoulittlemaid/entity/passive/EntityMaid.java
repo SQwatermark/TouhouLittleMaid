@@ -11,10 +11,9 @@ import com.github.tartaricacid.touhoulittlemaid.client.model.EntityModelJson;
 import com.github.tartaricacid.touhoulittlemaid.client.resources.CustomResourcesLoader;
 import com.github.tartaricacid.touhoulittlemaid.config.GeneralConfig;
 import com.github.tartaricacid.touhoulittlemaid.entity.ai.*;
-import com.github.tartaricacid.touhoulittlemaid.entity.item.EntityChair;
+import com.github.tartaricacid.touhoulittlemaid.entity.item.AbstractEntityFromItem;
 import com.github.tartaricacid.touhoulittlemaid.entity.item.EntityMarisaBroom;
 import com.github.tartaricacid.touhoulittlemaid.entity.item.EntityPowerPoint;
-import com.github.tartaricacid.touhoulittlemaid.entity.item.EntitySuitcase;
 import com.github.tartaricacid.touhoulittlemaid.entity.monster.EntityFairy;
 import com.github.tartaricacid.touhoulittlemaid.entity.monster.EntityRinnosuke;
 import com.github.tartaricacid.touhoulittlemaid.init.MaidSoundEvent;
@@ -40,6 +39,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
@@ -61,13 +61,19 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.HoverEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -107,6 +113,7 @@ public class EntityMaid extends AbstractEntityMaid {
      * 模式所应用的 AI 的优先级
      */
     private static final int TASK_PRIORITY = 5;
+    private static final float INFINITY_LEASHED_DISTANCE = -1.0f;
     /**
      * 拾起物品声音的延时计数器
      */
@@ -163,6 +170,9 @@ public class EntityMaid extends AbstractEntityMaid {
     private boolean canHoldTrolley = true;
     private boolean canHoldVehicle = true;
     private boolean canRidingBroom = true;
+    private boolean canRiding = true;
+    private BlockPos leashedPosition = BlockPos.ORIGIN;
+    private float maximumLeashedDistance = INFINITY_LEASHED_DISTANCE;
 
     public EntityMaid(World worldIn) {
         super(worldIn);
@@ -179,9 +189,9 @@ public class EntityMaid extends AbstractEntityMaid {
         this.tasks.addTask(3, new EntityMaidAvoidEntity(this, EntityCreeper.class, 6.0F, 0.8d, 0.9d));
         this.tasks.addTask(3, new EntityMaidCompassSetting(this, 0.6f));
         this.tasks.addTask(4, new EntityMaidBeg(this, 8.0f));
-        this.tasks.addTask(4, new EntityMaidGridInteract(this, 0.6f));
         this.tasks.addTask(4, new EntityMaidOpenDoor(this, true));
 
+        this.tasks.addTask(5, new EntityMaidStorage(this, 0.8f));
         this.tasks.addTask(6, new EntityMaidPickup(this, 0.8f));
         this.tasks.addTask(6, new EntityMaidFollowOwner(this, 0.8f, 5.0f, 2.0f));
 
@@ -341,8 +351,10 @@ public class EntityMaid extends AbstractEntityMaid {
                 // 没有实体坐在女仆上，女仆也没有坐在别的实体上
                 boolean maidNotRiddenAndRiding = !this.isBeingRidden() && !this.isRiding();
                 boolean passengerNotRiddenAndRiding = !entity.isBeingRidden() && !entity.isRiding();
-                // 服务端，女仆没有处于待命状态，而且尝试坐上去的实体是 IEntityRidingMaid
-                if (!world.isRemote && !this.isSitting() && maidNotRiddenAndRiding && passengerNotRiddenAndRiding &&
+                // 女仆处于待命或设置了不骑乘状态
+                boolean stateIsForbid = this.isSitting() || !this.isCanRiding();
+                // 服务端，而且尝试坐上去的实体是 IEntityRidingMaid
+                if (!world.isRemote && !stateIsForbid && maidNotRiddenAndRiding && passengerNotRiddenAndRiding &&
                         entity instanceof IEntityRidingMaid && ((IEntityRidingMaid) entity).canRiding(this)) {
                     entity.startRiding(this);
                 }
@@ -555,7 +567,7 @@ public class EntityMaid extends AbstractEntityMaid {
 
     @Override
     public boolean canAttackClass(Class<? extends EntityLivingBase> cls) {
-        return cls != EntitySuitcase.class && cls != EntityChair.class && cls != EntityMarisaBroom.class && cls != EntityArmorStand.class && super.canAttackClass(cls);
+        return cls != AbstractEntityFromItem.class && cls != EntityArmorStand.class && super.canAttackClass(cls);
     }
 
     @Override
@@ -788,7 +800,35 @@ public class EntityMaid extends AbstractEntityMaid {
         ItemStack stack = BlockGarageKit.getItemStackWithData("touhou_little_maid:entity.passive.maid",
                 this.getModelId(), entityTag);
         // 生成物品实体
-        entityDropItem(stack, 0).setEntityInvulnerable(true);
+        EntityItem entityItem = entityDropItem(stack, 0);
+        entityItem.setEntityInvulnerable(true);
+        if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages")
+                && this.getOwner() instanceof EntityPlayerMP) {
+            sendPositionMessage(entityItem, (EntityPlayerMP) this.getOwner());
+        }
+    }
+
+    private void sendPositionMessage(EntityItem entityItem, EntityPlayerMP owner) {
+        BlockPos pos = entityItem.getPosition();
+        String coordinate = String.format("[x:%d, y:%d, z:%d, dim:%d]",
+                pos.getX(), pos.getY(), pos.getZ(), entityItem.dimension);
+        TextComponentTranslation start = new TextComponentTranslation("message.touhou_little_maid.maid.death_pos");
+        TextComponentString clickable = new TextComponentString(coordinate);
+        Style chatStyle = clickable.getStyle();
+        if (Loader.isModLoaded("journeymap")) {
+            chatStyle.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jm wpedit " + coordinate));
+            TextComponentTranslation hover = new TextComponentTranslation("message.touhou_little_maid.maid.journeymap.name");
+            hover.getStyle().setColor(TextFormatting.YELLOW);
+            TextComponentTranslation click = new TextComponentTranslation("message.touhou_little_maid.maid.journeymap.hover_message.click");
+            TextComponentTranslation ctrlClick = new TextComponentTranslation("message.touhou_little_maid.maid.journeymap.hover_message.ctrl_click");
+            TextComponentString hover2 = new TextComponentString(click.getUnformattedComponentText() + "\n" + ctrlClick.getUnformattedComponentText());
+            hover2.getStyle().setColor(TextFormatting.AQUA);
+            hover.appendSibling(hover2);
+            chatStyle.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover));
+        }
+        chatStyle.setColor(TextFormatting.AQUA);
+        start.appendSibling(clickable);
+        owner.sendMessage(start);
     }
 
     @Override
@@ -917,6 +957,9 @@ public class EntityMaid extends AbstractEntityMaid {
         if (compound.hasKey(NBT.CAN_RIDING_BROOM.getName())) {
             canRidingBroom = compound.getBoolean(NBT.CAN_RIDING_BROOM.getName());
         }
+        if (compound.hasKey(NBT.CAN_RIDING.getName())) {
+            canRiding = compound.getBoolean(NBT.CAN_RIDING.getName());
+        }
     }
 
     @Override
@@ -950,6 +993,7 @@ public class EntityMaid extends AbstractEntityMaid {
         compound.setBoolean(NBT.CAN_HOLD_TROLLEY.getName(), canHoldTrolley);
         compound.setBoolean(NBT.CAN_HOLD_VEHICLE.getName(), canHoldVehicle);
         compound.setBoolean(NBT.CAN_RIDING_BROOM.getName(), canRidingBroom);
+        compound.setBoolean(NBT.CAN_RIDING.getName(), canRiding);
     }
 
     @Override
@@ -1120,10 +1164,6 @@ public class EntityMaid extends AbstractEntityMaid {
     public IItemHandlerModifiable getAllBackpackInv() {
         return new CombinedInvWrapper(smallBackpackInv, middleBackpackInv, bigBackpackInv);
     }
-
-    private static final float INFINITY_LEASHED_DISTANCE = -1.0f;
-    private BlockPos leashedPosition = BlockPos.ORIGIN;
-    private float maximumLeashedDistance = INFINITY_LEASHED_DISTANCE;
 
     @Override
     public boolean isWithinHomeDistanceCurrentPosition() {
@@ -1548,6 +1588,14 @@ public class EntityMaid extends AbstractEntityMaid {
         this.canRidingBroom = canRidingBroom;
     }
 
+    public boolean isCanRiding() {
+        return canRiding;
+    }
+
+    public void setCanRiding(boolean canRiding) {
+        this.canRiding = canRiding;
+    }
+
     @Nonnull
     @Override
     @SideOnly(Side.CLIENT)
@@ -1603,7 +1651,9 @@ public class EntityMaid extends AbstractEntityMaid {
         // 能够持有载具
         CAN_HOLD_VEHICLE("MaidCanHoldVehicle"),
         // 能够使用扫帚
-        CAN_RIDING_BROOM("MaidCanRidingBroom");
+        CAN_RIDING_BROOM("MaidCanRidingBroom"),
+        // 能够主动坐上坐垫之类的
+        CAN_RIDING("MaidCanRidingEntity");
 
         private String name;
 
@@ -1628,7 +1678,7 @@ public class EntityMaid extends AbstractEntityMaid {
         MIDDLE(2),
         BIG(3);
 
-        private int level;
+        private final int level;
 
         EnumBackPackLevel(int level) {
             this.level = level;

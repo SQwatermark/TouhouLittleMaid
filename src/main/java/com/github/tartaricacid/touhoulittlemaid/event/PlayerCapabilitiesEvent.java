@@ -1,10 +1,7 @@
 package com.github.tartaricacid.touhoulittlemaid.event;
 
 import com.github.tartaricacid.touhoulittlemaid.TouhouLittleMaid;
-import com.github.tartaricacid.touhoulittlemaid.capability.MaidNumHandler;
-import com.github.tartaricacid.touhoulittlemaid.capability.MaidNumSerializer;
-import com.github.tartaricacid.touhoulittlemaid.capability.PowerHandler;
-import com.github.tartaricacid.touhoulittlemaid.capability.PowerSerializer;
+import com.github.tartaricacid.touhoulittlemaid.capability.*;
 import com.github.tartaricacid.touhoulittlemaid.network.simpleimpl.SyncOwnerMaidNumMessage;
 import com.github.tartaricacid.touhoulittlemaid.network.simpleimpl.SyncPowerMessage;
 import com.github.tartaricacid.touhoulittlemaid.proxy.CommonProxy;
@@ -13,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -30,6 +28,7 @@ import static com.github.tartaricacid.touhoulittlemaid.config.GeneralConfig.MISC
 public class PlayerCapabilitiesEvent {
     private static final ResourceLocation POWER_CAP = new ResourceLocation(TouhouLittleMaid.MOD_ID, "power");
     private static final ResourceLocation MAID_NUM_CAP = new ResourceLocation(TouhouLittleMaid.MOD_ID, "owner_maid_num");
+    private static final ResourceLocation HAS_GUIDE_CAP = new ResourceLocation(TouhouLittleMaid.MOD_ID, "has_guide");
 
     /**
      * 附加 Capability 属性
@@ -39,11 +38,12 @@ public class PlayerCapabilitiesEvent {
         if (event.getObject() instanceof EntityPlayer) {
             event.addCapability(POWER_CAP, new PowerSerializer());
             event.addCapability(MAID_NUM_CAP, new MaidNumSerializer());
+            event.addCapability(HAS_GUIDE_CAP, new HasGuideSerializer());
         }
     }
 
     /**
-     * 玩家跨越维度或者死亡时的属性变化
+     * 玩家从末地回到主世界，或者死亡时的属性变化
      */
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
@@ -65,6 +65,32 @@ public class PlayerCapabilitiesEvent {
         MaidNumHandler oldNum = event.getOriginal().getCapability(MaidNumSerializer.MAID_NUM_CAP, null);
         if (num != null && oldNum != null) {
             num.set(oldNum.get());
+        }
+
+        HasGuideHandler hasGuide = player.getCapability(HasGuideSerializer.HAS_GUIDE_CAP, null);
+        HasGuideHandler oldHasGuide = event.getOriginal().getCapability(HasGuideSerializer.HAS_GUIDE_CAP, null);
+        if (hasGuide != null && oldHasGuide != null) {
+            hasGuide.setFirst(oldHasGuide.isFirst());
+        }
+    }
+
+    /**
+     * 其他跨越维度时候的更新提醒
+     */
+    @SubscribeEvent
+    public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
+        if (event.getEntity() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntity();
+
+            PowerHandler power = player.getCapability(PowerSerializer.POWER_CAP, null);
+            if (power != null) {
+                power.markDirty();
+            }
+
+            MaidNumHandler num = player.getCapability(MaidNumSerializer.MAID_NUM_CAP, null);
+            if (num != null) {
+                num.markDirty();
+            }
         }
     }
 

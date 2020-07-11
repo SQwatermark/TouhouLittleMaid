@@ -17,6 +17,9 @@ entity.touhou_little_maid.suitcase.name=拉杆箱
 entity.touhou_little_maid.backpack.name=背包
 entity.touhou_little_maid.trolley_audio.name=便携式音响
 entity.touhou_little_maid.maid_vehicle.name=女仆载具
+entity.touhou_little_maid.scarecrow.name=稻草人
+entity.touhou_little_maid.portable_audio.name=手提音响
+entity.touhou_little_maid.throw_power_point.name=P 点
 
 # Item
 item.touhou_little_maid.kappa_compass.name=河童的罗盘
@@ -50,6 +53,11 @@ item.touhou_little_maid.trolley_audio.name=便携式音响
 item.touhou_little_maid.cat_cart.name=猫车
 item.touhou_little_maid.wheel_chair.name=轮椅
 item.touhou_little_maid.rickshaw.name=黄包车
+item.touhou_little_maid.scarecrow.name=稻草人
+item.touhou_little_maid.portable_audio.name=手提音响
+item.touhou_little_maid.chisel.name=雕刻刀
+item.touhou_little_maid.extinguisher.name=灭火器
+item.touhou_little_maid.power_point.name=P 点
 
 # Block
 tile.touhou_little_maid.garage_kit.name=手办
@@ -94,6 +102,7 @@ tooltips.touhou_little_maid.grid.input.true=输入
 tooltips.touhou_little_maid.grid.input.false=输出
 tooltips.touhou_little_maid.grid.blacklist.true=黑名单
 tooltips.touhou_little_maid.grid.blacklist.false=白名单
+tooltips.touhou_little_maid.grid.deprecated=§4警告：此物品存在诸多问题，将会在未来版本移除。请勿使用与合成！
 tooltips.touhou_little_maid.hata_sasimono.desc=右击女仆应用上旗指物。
 tooltips.touhou_little_maid.album.desc=存储情况：%d/%d
 tooltips.touhou_little_maid.maid_beacon.desc=存储P点：%s
@@ -108,6 +117,9 @@ tooltips.touhou_little_maid.maid_model_coupon.desc=女仆模型：%s
 tooltips.touhou_little_maid.gashapon_machines.desc=通过扭蛋币或绿宝石（默认）右击抽扭蛋
 tooltips.touhou_little_maid.bauble.desc=§a[女仆饰品]
 tooltips.touhou_little_maid.bauble.usage=需要放置在女仆的饰品栏中
+tooltips.touhou_little_maid.scarecrow.name=玩家名称：%s
+tooltips.touhou_little_maid.scarecrow.text=文本：%s
+tooltips.touhou_little_maid.scarecrow.special=[特殊模型]
 
 # Message
 message.touhou_little_maid.kappa_compass.usage.result.success=坐标写入成功！
@@ -125,8 +137,7 @@ message.touhou_little_maid.photo.have_no_nbt_data=这鬼照片没有 NBT 数据�
 message.touhou_little_maid.altar.not_enough_power=你的 P 点不足。
 message.touhou_little_maid.tombstone.place_fail=墓碑放置失败！
 message.touhou_little_maid.tombstone.on_block_activated=墓碑已经被收回！
-message.touhou_little_maid.missing_patchouli=[{"text":"[车万女仆] ","color":"green","bold":true},{"text":"点击此处","color":"gold","underlined":true,"bold":false,"clickEvent":{"action":"open_url","value":"https://www.curseforge.com/minecraft/mc-mods/patchouli/files/all?filter-game-version=2020709689:6756"},"hoverEvent":{"action":"show_text","value":"https://www.curseforge.com/minecraft/mc-mods/patchouli"}},{"text":"安装帕秋莉模组来获取手册","color":"yellow","bold":false}]
-message.touhou_little_maid.java_version_old=[{"text":"[车万女仆] ","color":"green","bold":true},{"text":"你的 Java 8 版本过低，符卡无法正常加载，建议使用 60 及以上版本的 Java。","color":"yellow","bold":false}]
+message.touhou_little_maid.missing_patchouli=[{"text":"[车万女仆] ","color":"green","bold":true},{"text":"点击此处","color":"gold","underlined":true,"bold":false,"clickEvent":{"action":"open_url","value":"https://media.forgecdn.net/files/2731/963/Patchouli-1.0-20.jar"},"hoverEvent":{"action":"show_text","value":"https://www.curseforge.com/minecraft/mc-mods/patchouli"}},{"text":"安装帕秋莉模组来获取手册","color":"yellow","bold":false}]
 message.touhou_little_maid.broom.message=只有创造模式玩家可以骑乘，但是你可以修改配置文件关闭此限制
 message.touhou_little_maid.debug_danmaku.type=当前类型：%s
 message.touhou_little_maid.owner_maid_num.can_not_add=你无法再驯服女仆，你已经达到了上限（%d/%d）
@@ -140,6 +151,15 @@ message.touhou_little_maid.maid_backpack.level_is_biggest=背包等级已经最�
 message.touhou_little_maid.resources_download.reload=重载资源信息中……
 message.touhou_little_maid.slashblade.position=拔刀剑位置已经修改！
 message.touhou_little_maid.maid_pos.clear=女仆坐标已清除！
+message.touhou_little_maid.maid_riding_set.true=实体骑乘：开
+message.touhou_little_maid.maid_riding_set.false=实体骑乘：关
+message.touhou_little_maid.extinguisher.player_cannot_use=你匮乏的知识并不了解这物品该如何使用
+message.touhou_little_maid.chisel.hit_block_error=请右击粘土方块
+message.touhou_little_maid.chisel.offhand_not_photo=请在副手持有女仆照片
+message.touhou_little_maid.maid.death_pos=女仆死亡坐标：
+message.touhou_little_maid.maid.journeymap.name=旅行地图：
+message.touhou_little_maid.maid.journeymap.hover_message.click=点击创建坐标点。
+message.touhou_little_maid.maid.journeymap.hover_message.ctrl_click=Ctrl 点击在大地图中进行查看。
 
 # Compass Mode
 compass.touhou_little_maid.mode.single_point=单点模式
@@ -152,6 +172,8 @@ compass.touhou_little_maid.mode.home.disable=§4§lHome 模式未开启
 # Info
 info.touhou_little_maid.maid.unset_pos=§6§l未设置坐标
 info.touhou_little_maid.maid.set_pos=§a§l女仆坐标：%d，%d，%d
+info.touhou_little_maid.portable_audio.playing=歌曲已经在播放了哦~
+info.touhou_little_maid.portable_audio.404=此歌曲不存在，请检查是否被下架
 
 # Death
 death.touhou_little_maid.attack.danmaku.1=%1$s被%2$s用弹幕干掉了
@@ -195,6 +217,7 @@ config.touhou_little_maid.misc_config.override_npc_render=覆盖 NPC 渲染
 config.touhou_little_maid.misc_config.chair_cannot_change_model=只有创造模式玩家能够切换坐垫模型
 config.touhou_little_maid.misc_config.chair_cannot_be_destroied=只有创造模式玩家能够打掉坐垫
 config.touhou_little_maid.misc_config.danmaku_affected_by_fluid=弹幕会被流体影响么？
+config.touhou_little_maid.misc_config.give_guide_book_first=首次进入游戏给予手册？
 
 # Gashapon Config
 config.touhou_little_maid.gashapon_config=扭蛋配置
@@ -205,6 +228,11 @@ config.touhou_little_maid.gashapon_config.gashapon_weights_4=SSR 等级扭蛋权
 config.touhou_little_maid.gashapon_config.gashapon_weights_3=SR 等级扭蛋权重
 config.touhou_little_maid.gashapon_config.gashapon_weights_2=R 等级扭蛋权重
 config.touhou_little_maid.gashapon_config.gashapon_weights_1=N 等级扭蛋权重
+
+# Music Config
+config.touhou_little_maid.music_config=音乐配置
+config.touhou_little_maid.music_config.player_name_reg=玩家名正则过滤
+config.touhou_little_maid.music_config.receive_music=是否接收音乐
 
 # Danmaku Type
 danmaku_type.touhou_little_maid.pellet=点弹
@@ -243,6 +271,7 @@ task.touhou_little_maid.shears=剪刀
 task.touhou_little_maid.milk=牛奶
 task.touhou_little_maid.torch=火把
 task.touhou_little_maid.feed_animal=繁殖动物
+task.touhou_little_maid.extinguishing=灭火
 
 # GUI
 gui.touhou_little_maid.info.healthy=血量：%f/%f
@@ -266,6 +295,7 @@ gui.touhou_little_maid.button.sound_credit=打开音效的鸣谢界面
 gui.touhou_little_maid.button.pack_download=打开女仆资源包的下载界面
 gui.touhou_little_maid.button.show_pos=显示女仆坐标
 gui.touhou_little_maid.button.clear_pos=清除女仆坐标
+gui.touhou_little_maid.button.riding_set=女仆骑乘设置
 gui.touhou_little_maid.skin_details.close=关闭
 gui.touhou_little_maid.skin_details.floor=显示/隐藏地面网格
 gui.touhou_little_maid.skin_details.return=返回
@@ -319,9 +349,30 @@ gui.touhou_little_maid.resources_download.license=协议：%s
 gui.touhou_little_maid.resources_download.fail.1=网络好像出了问题……
 gui.touhou_little_maid.resources_download.fail.2=请点击左上角按钮，并等待几秒钟
 gui.touhou_little_maid.resources_download.reload=重载
+gui.touhou_little_maid.resources_download.tab.0=全部资源包
+gui.touhou_little_maid.resources_download.tab.1=女仆资源包
+gui.touhou_little_maid.resources_download.tab.2=坐垫资源包
+gui.touhou_little_maid.resources_download.tab.3=声音资源包
+gui.touhou_little_maid.resources_download.open_resources_gui=打开资源包加载界面
 gui.touhou_little_maid.inventory.scroll.desc=请滑动鼠标滚轮进行物品栏滚动。
 gui.touhou_little_maid.animation_choose.file_filter.description=JavaScript 文件
 gui.touhou_little_maid.compass.close=关闭
+gui.touhou_little_maid.scarecrow_gui.name.desc=想要使用的玩家皮肤名称：
+gui.touhou_little_maid.scarecrow_gui.text.desc=稻草人牌子上的显示文字：
+gui.touhou_little_maid.portable_audio.song_id.illegal=歌曲 ID 不合法
+gui.touhou_little_maid.portable_audio.play_list.importer=歌单导入者：%s
+gui.touhou_little_maid.portable_audio.play_list.name=§c§l[歌单] §6§l%s
+gui.touhou_little_maid.portable_audio.play_list.creator=%s %s 创建
+gui.touhou_little_maid.portable_audio.play_list.track_count=歌曲数
+gui.touhou_little_maid.portable_audio.play_list.play_count=播放数
+gui.touhou_little_maid.portable_audio.play_list.tags=标签：%s
+gui.touhou_little_maid.portable_audio.play_list.description=简介：%s
+gui.touhou_little_maid.portable_audio.play_list.loading_situation=§n加载情况：%d/%d
+gui.touhou_little_maid.portable_audio.track.name=§l音乐标题
+gui.touhou_little_maid.portable_audio.track.artists=§l歌手
+gui.touhou_little_maid.portable_audio.track.album=§l专辑
+gui.touhou_little_maid.portable_audio.track.duration=§l时长
+gui.touhou_little_maid.portable_audio.play_list.empty=模组检测到网易云歌单列表为空，原因可能如下：\n\n- 网易云音乐未在你所处地区开放使用\n- 你当前的网络环境无法连接到网易云音乐服务器\n- 网易云音乐屏蔽了你所用的 IP\n- 其他未知的网络问题\n\n当前仅支持网易云音乐，所以只有中国大陆玩家可以使用，对此深表歉意。\n不过我们后续会增加更多其他音乐网站的支持，敬请期待。\n\n请注意：这是你和网易云音乐之间的网络问题，并非模组 BUG！\n\n【按 Esc 键退出此界面】
 
 gui.touhou_little_maid.skin.text.version=版本：%s
 gui.touhou_little_maid.skin.text.date=日期：%s
@@ -434,6 +485,29 @@ model.touhou_little_maid.tsukumo_benben.name=九十九弁弁
 model.touhou_little_maid.hecatia_lapislazuli.name=赫卡提亚·拉碧斯拉祖利
 model.touhou_little_maid.miyoi_okunoda.name=奥野田美宵
 model.touhou_little_maid.yumemi_okazaki.name=冈崎梦美
+model.touhou_little_maid.niwatari_kutaka.name=庭渡久侘歌
+model.touhou_little_maid.clownpiece.name=克劳恩皮丝
+model.touhou_little_maid.doremy_sweet.name=哆来咪·苏伊特
+model.touhou_little_maid.ebisu_eika.name=戎璎花
+model.touhou_little_maid.eternity_larva.name=爱塔妮缇拉尔瓦
+model.touhou_little_maid.hieda_no_akyuu.name=稗田阿求
+model.touhou_little_maid.himekaidou_hatate.name=姬海棠果
+model.touhou_little_maid.ibaraki_kasen.name=茨木华扇
+model.touhou_little_maid.joutougu_mayumi.name=杖刀偶磨弓
+model.touhou_little_maid.komano_aunn.name=高丽野阿吽
+model.touhou_little_maid.kurokoma_saki.name=骊驹早鬼
+model.touhou_little_maid.maribel_hearn.name=玛艾露贝莉·赫恩
+model.touhou_little_maid.motoori_kosuzu.name=本居小铃
+model.touhou_little_maid.nishida_satono.name=尔子田里乃
+model.touhou_little_maid.sakata_nemuno.name=坂田合欢
+model.touhou_little_maid.teireid_mai.name=丁礼田舞
+model.touhou_little_maid.tokiko.name=朱鹭子
+model.touhou_little_maid.usami_renko.name=宇佐见莲子
+model.touhou_little_maid.usami_sumireko.name=宇佐见堇子
+model.touhou_little_maid.ushizaki_urumi.name=牛崎润美
+model.touhou_little_maid.watatsuki_no_toyohime.name=绵月丰姬
+model.touhou_little_maid.watatsuki_no_yorihime.name=绵月依姬
+model.touhou_little_maid.yorigami_jyoon.name=依神女苑
 
 model.touhou_little_maid.hakurei_reimu.desc=§7乐园的巫女
 model.touhou_little_maid.yakumo_ran.desc=§7隙间妖怪的式神
@@ -529,6 +603,29 @@ model.touhou_little_maid.tsukumo_benben.desc=§7古旧琵琶的付丧神
 model.touhou_little_maid.hecatia_lapislazuli.desc=§7地狱的女神
 model.touhou_little_maid.miyoi_okunoda.desc=§7梦幻酒家「鲵吞亭」的店花
 model.touhou_little_maid.yumemi_okazaki.desc=§7梦幻传说
+model.touhou_little_maid.niwatari_kutaka.desc=§7地狱口岸的守护神
+model.touhou_little_maid.clownpiece.desc=§7地狱的妖精
+model.touhou_little_maid.doremy_sweet.desc=§7梦之支配者
+model.touhou_little_maid.ebisu_eika.desc=§7河原的偶像水子
+model.touhou_little_maid.eternity_larva.desc=§7接近神的蝴蝶妖精
+model.touhou_little_maid.hieda_no_akyuu.desc=§7幻想乡的记忆
+model.touhou_little_maid.himekaidou_hatate.desc=§7当代的念写记者
+model.touhou_little_maid.ibaraki_kasen.desc=§7独臂有角的仙人
+model.touhou_little_maid.joutougu_mayumi.desc=§7埴轮兵长
+model.touhou_little_maid.komano_aunn.desc=§7醉心神佛的守护神兽
+model.touhou_little_maid.kurokoma_saki.desc=§7劲牙组组长
+model.touhou_little_maid.maribel_hearn.desc=§7-
+model.touhou_little_maid.motoori_kosuzu.desc=§7识文解意的爱书人
+model.touhou_little_maid.nishida_satono.desc=§7过于危险的背景舞者
+model.touhou_little_maid.sakata_nemuno.desc=§7跨越浮世门关的山姥
+model.touhou_little_maid.teireid_mai.desc=§7过于危险的背景舞者
+model.touhou_little_maid.tokiko.desc=§7-
+model.touhou_little_maid.usami_renko.desc=§7-
+model.touhou_little_maid.usami_sumireko.desc=§7曝光深秘！秘封俱乐部初代会长
+model.touhou_little_maid.ushizaki_urumi.desc=§7古代鱼的携子护卫
+model.touhou_little_maid.watatsuki_no_toyohime.desc=§7连接海与山的月之公主
+model.touhou_little_maid.watatsuki_no_yorihime.desc=§7神灵附体的月之公主
+model.touhou_little_maid.yorigami_jyoon.desc=§7最凶最恶的双子之妹
 
 model.touhou_little_maid.cushion.name=坐垫
 model.touhou_little_maid.class_desk.name=课桌
@@ -577,6 +674,7 @@ subtitle.touhou_little_maid.maid.mode.shears=女仆：剪刀
 subtitle.touhou_little_maid.maid.mode.milk=女仆：获取牛奶
 subtitle.touhou_little_maid.maid.mode.torch=女仆：火把
 subtitle.touhou_little_maid.maid.mode.feed_animal=女仆：繁殖动物
+subtitle.touhou_little_maid.maid.mode.extinguishing=女仆：灭火
 subtitle.touhou_little_maid.maid.ai.find_target=女仆：发现目标
 subtitle.touhou_little_maid.maid.ai.hurt=女仆：受伤
 subtitle.touhou_little_maid.maid.ai.hurt_fire=女仆：火焰伤害
@@ -599,6 +697,7 @@ subtitle.touhou_little_maid.monster.rinnosuke_death=霖之助：死亡
 subtitle.touhou_little_maid.monster.rinnosuke_hurt=霖之助：受伤
 subtitle.touhou_little_maid.entity.box=盒子：打开
 subtitle.touhou_little_maid.item.compass=罗盘：选择点
+subtitle.touhou_little_maid.item.portable_audio=音响：音乐
 
 # HWYLA & The One Probe
 hwyla.touhou_little_maid.entity_maid.task=当前模式：%s

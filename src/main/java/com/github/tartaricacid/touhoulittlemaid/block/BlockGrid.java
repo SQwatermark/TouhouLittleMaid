@@ -60,7 +60,6 @@ public class BlockGrid extends Block {
         setTranslationKey(TouhouLittleMaid.MOD_ID + ".grid");
         setSoundType(SoundType.METAL);
         setDefaultState(blockState.getBaseState().withProperty(DIRECTION, Direction.UP_NORTH).withProperty(INPUT, true).withProperty(BLACKLIST, false));
-        setCreativeTab(MaidItems.MAIN_TABS);
         setHardness(0.25f);
     }
 
@@ -206,6 +205,8 @@ public class BlockGrid extends Block {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
+        tooltip.add(I18n.format("tooltips.touhou_little_maid.grid.deprecated"));
+        tooltip.add("");
         NBTTagCompound nbttagcompound = stack.getTagCompound();
         if (nbttagcompound == null || !nbttagcompound.hasKey("BlockEntityTag", Constants.NBT.TAG_COMPOUND)) {
             tooltip.add(getModeTooltip(true, false));

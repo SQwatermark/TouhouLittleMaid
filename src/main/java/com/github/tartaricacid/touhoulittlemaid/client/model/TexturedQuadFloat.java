@@ -13,11 +13,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TexturedQuadFloat extends TexturedQuad {
     public TexturedQuadFloat(PositionTextureVertex[] vertices, float texcoordU1, float texcoordV1, float texcoordU2, float texcoordV2, float textureWidth, float textureHeight) {
         super(vertices, (int) texcoordU1, (int) texcoordV1, (int) texcoordU2, (int) texcoordV2, textureWidth, textureHeight);
-        float f = 0.0F / textureWidth;
-        float f1 = 0.0F / textureHeight;
-        vertices[0] = vertices[0].setTexturePosition(texcoordU2 / textureWidth - f, texcoordV1 / textureHeight + f1);
-        vertices[1] = vertices[1].setTexturePosition(texcoordU1 / textureWidth + f, texcoordV1 / textureHeight + f1);
-        vertices[2] = vertices[2].setTexturePosition(texcoordU1 / textureWidth + f, texcoordV2 / textureHeight - f1);
-        vertices[3] = vertices[3].setTexturePosition(texcoordU2 / textureWidth - f, texcoordV2 / textureHeight - f1);
+        vertices[0] = vertices[0].setTexturePosition(texcoordU2 / textureWidth, texcoordV1 / textureHeight);
+        vertices[1] = vertices[1].setTexturePosition(texcoordU1 / textureWidth, texcoordV1 / textureHeight);
+        vertices[2] = vertices[2].setTexturePosition(texcoordU1 / textureWidth, texcoordV2 / textureHeight);
+        vertices[3] = vertices[3].setTexturePosition(texcoordU2 / textureWidth, texcoordV2 / textureHeight);
     }
 }

@@ -10,6 +10,7 @@ import com.github.tartaricacid.touhoulittlemaid.init.MaidItems;
 import com.github.tartaricacid.touhoulittlemaid.tileentity.TileEntityAltar;
 import com.github.tartaricacid.touhoulittlemaid.tileentity.TileEntityGarageKit;
 import com.github.tartaricacid.touhoulittlemaid.tileentity.TileEntityGrid;
+import com.github.tartaricacid.touhoulittlemaid.tileentity.TileEntityStatue;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;
@@ -43,6 +44,7 @@ public final class MaidModel {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGarageKit.class, new TileEntityGarageKitRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGrid.class, new TileEntityGridRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAltar.class, new TileEntityAltarRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityStatue.class, new TileEntityStatueRenderer());
 
         // Block Item
         Item.getItemFromBlock(MaidBlocks.GARAGE_KIT).setTileEntityItemStackRenderer(TileEntityItemStackGarageKitRenderer.INSTANCE);
@@ -77,10 +79,15 @@ public final class MaidModel {
         registerRender(MaidItems.GASHAPON_COIN);
         registerRender(MaidItems.SUITCASE);
         registerRender(MaidItems.TROLLEY_AUDIO);
+        registerRender(MaidItems.SCARECROW);
+        registerRender(MaidItems.PORTABLE_AUDIO);
+        registerRender(MaidItems.CHISEL);
+        registerRender(MaidItems.POWER_POINT);
 
         register2d3dRender(MaidItems.HAKUREI_GOHEI);
         register2d3dRender(MaidItems.MAID_BEACON);
         register2d3dRender(MaidItems.CAMERA);
+        register2d3dRender(MaidItems.EXTINGUISHER);
         registerReplaceRender(Items.TOTEM_OF_UNDYING,
                 new ModelResourceLocation("totem", "inventory"),
                 getModelRl(TouhouLittleMaid.MOD_ID, "life_point"),

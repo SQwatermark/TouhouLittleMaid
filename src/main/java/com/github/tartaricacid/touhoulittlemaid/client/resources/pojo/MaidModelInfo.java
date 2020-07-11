@@ -1,5 +1,7 @@
 package com.github.tartaricacid.touhoulittlemaid.client.resources.pojo;
 
+import com.github.tartaricacid.touhoulittlemaid.TouhouLittleMaid;
+import com.google.common.collect.Lists;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
 import net.minecraft.util.ResourceLocation;
@@ -50,6 +52,9 @@ public class MaidModelInfo implements IModelInfo {
 
     @SerializedName("can_riding_broom")
     private boolean canRidingBroom = true;
+
+    @SerializedName("easter_egg")
+    private EasterEgg easterEgg = null;
 
     @Override
     public ResourceLocation getTexture() {
@@ -114,6 +119,10 @@ public class MaidModelInfo implements IModelInfo {
         return canRidingBroom;
     }
 
+    public EasterEgg getEasterEgg() {
+        return easterEgg;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public MaidModelInfo decorate() {
@@ -137,7 +146,23 @@ public class MaidModelInfo implements IModelInfo {
             name = String.format("{model.%s.%s.name}", modelId.getNamespace(), modelId.getPath());
         }
         if (animation == null || animation.size() == 0) {
-            animation = Collections.singletonList(new ResourceLocation("touhou_little_maid:animation/maid.default.js"));
+            animation = Lists.newArrayList(
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/head/default.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/head/blink.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/head/beg.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/head/music_shake.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/leg/default.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/arm/default.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/arm/swing.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/arm/vertical.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/sit/default.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/armor/default.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/armor/reverse.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/wing/default.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/tail/default.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/maid/default/sit/skirt_rotation.js"),
+                    new ResourceLocation(TouhouLittleMaid.MOD_ID, "animation/base/float/default.js")
+            );
         }
         renderEntityScale = MathHelper.clamp(renderEntityScale, 0.7f, 1.3f);
         return this;

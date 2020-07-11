@@ -17,6 +17,9 @@ entity.touhou_little_maid.suitcase.name=Suitcase
 entity.touhou_little_maid.backpack.name=Backpack
 entity.touhou_little_maid.trolley_audio.name=Trolley Audio
 entity.touhou_little_maid.maid_vehicle.name=Maid Vehicle
+entity.touhou_little_maid.scarecrow.name=Scarecrow
+entity.touhou_little_maid.portable_audio.name=Portable Audio
+entity.touhou_little_maid.throw_power_point.name=Power Point
 
 # Item
 item.touhou_little_maid.kappa_compass.name=Kappa's Compass
@@ -50,6 +53,11 @@ item.touhou_little_maid.trolley_audio.name=Trolley Audio
 item.touhou_little_maid.cat_cart.name=Cat Cart
 item.touhou_little_maid.wheel_chair.name=Wheel Chair
 item.touhou_little_maid.rickshaw.name=Rickshaw
+item.touhou_little_maid.scarecrow.name=Scarecrow
+item.touhou_little_maid.portable_audio.name=Portable Audio
+item.touhou_little_maid.chisel.name=Chisel
+item.touhou_little_maid.extinguisher.name=Extinguisher
+item.touhou_little_maid.power_point.name=Power Point
 
 # Block
 tile.touhou_little_maid.garage_kit.name=Garage Kit
@@ -94,6 +102,7 @@ tooltips.touhou_little_maid.grid.input.true=Input
 tooltips.touhou_little_maid.grid.input.false=Output
 tooltips.touhou_little_maid.grid.blacklist.true=Blacklist
 tooltips.touhou_little_maid.grid.blacklist.false=Whitelist
+tooltips.touhou_little_maid.grid.deprecated=§4Warning: This item has many problems and will be removed in a future version. Please do not use and craft!
 tooltips.touhou_little_maid.hata_sasimono.desc=Right click on the maid to apply hata sasimono.
 tooltips.touhou_little_maid.album.desc=Storage Situation: %d/%d
 tooltips.touhou_little_maid.maid_beacon.desc=Storage Power: %s
@@ -108,6 +117,9 @@ tooltips.touhou_little_maid.maid_model_coupon.desc=Maid Model: %s
 tooltips.touhou_little_maid.gashapon_machines.desc=Draw a gashapon by right-click on gashapon coin or emerald (default).
 tooltips.touhou_little_maid.bauble.desc=§a[Maid Bauble]
 tooltips.touhou_little_maid.bauble.usage=Need to be placed in the maid's bauble inventory
+tooltips.touhou_little_maid.scarecrow.name=Player Name: %s
+tooltips.touhou_little_maid.scarecrow.text=Text: %s
+tooltips.touhou_little_maid.scarecrow.special=[Special]
 
 # Message
 message.touhou_little_maid.kappa_compass.usage.result.success=Write point success!
@@ -125,8 +137,7 @@ message.touhou_little_maid.photo.have_no_nbt_data=This damnable photo don't have
 message.touhou_little_maid.altar.not_enough_power=You don't have enough power.
 message.touhou_little_maid.tombstone.place_fail=Tombstone Place Fail!
 message.touhou_little_maid.tombstone.on_block_activated=Tombstone Has Been Taken Back!
-message.touhou_little_maid.missing_patchouli=[{"text":"[Touhou Little Maid] ","color":"green","bold":true},{"text":"Click Here","color":"gold","underlined":true,"bold":false,"clickEvent":{"action":"open_url","value":"https://www.curseforge.com/minecraft/mc-mods/patchouli/files/all?filter-game-version=2020709689:6756"},"hoverEvent":{"action":"show_text","value":"https://www.curseforge.com/minecraft/mc-mods/patchouli"}},{"text":" To Install Patchouli Mod To Get The Manual","color":"yellow","bold":false}]
-message.touhou_little_maid.java_version_old=[{"text":"[Touhou Little Maid] ","color":"green","bold":true},{"text":"Your version of Java 8 is too low and the spell card cannot load properly. It is recommended to use Java 8 version 60 and above.","color":"yellow","bold":false}]
+message.touhou_little_maid.missing_patchouli=[{"text":"[Touhou Little Maid] ","color":"green","bold":true},{"text":"Click Here","color":"gold","underlined":true,"bold":false,"clickEvent":{"action":"open_url","value":"https://media.forgecdn.net/files/2731/963/Patchouli-1.0-20.jar"},"hoverEvent":{"action":"show_text","value":"https://www.curseforge.com/minecraft/mc-mods/patchouli"}},{"text":" To Install Patchouli Mod To Get The Manual","color":"yellow","bold":false}]
 message.touhou_little_maid.broom.message=Only creative mode player can ride it, but you can disable it by modifying the configuration.
 message.touhou_little_maid.debug_danmaku.type=Current Type: %s
 message.touhou_little_maid.owner_maid_num.can_not_add=You can no longer tame maids, you have reached the limit (%d/%d)
@@ -140,6 +151,15 @@ message.touhou_little_maid.maid_backpack.level_is_biggest=Backpack level is bigg
 message.touhou_little_maid.resources_download.reload=Reloading resource information...
 message.touhou_little_maid.slashblade.position=Slash blade position is changed!
 message.touhou_little_maid.maid_pos.clear=Maid Pos Cleared!
+message.touhou_little_maid.maid_riding_set.true=Entity Riding: ON
+message.touhou_little_maid.maid_riding_set.false=Entity Riding: OFF
+message.touhou_little_maid.extinguisher.player_cannot_use=Your lack of knowledge does not know how to use this item
+message.touhou_little_maid.chisel.hit_block_error=Please right click on the clay block
+message.touhou_little_maid.chisel.offhand_not_photo=Please have a photo of the maid in your offhand
+message.touhou_little_maid.maid.death_pos=Maid Death Pos:
+message.touhou_little_maid.maid.journeymap.name=JourneyMap:
+message.touhou_little_maid.maid.journeymap.hover_message.click=Click to create waypoint.
+message.touhou_little_maid.maid.journeymap.hover_message.ctrl_click=Ctrl + click to view on map.
 
 # Compass Mode
 compass.touhou_little_maid.mode.single_point=Single Point
@@ -152,6 +172,8 @@ compass.touhou_little_maid.mode.home.disable=§4§lHOME MODE IS DISABLE
 # Info
 info.touhou_little_maid.maid.unset_pos=§6§lUnset Pos
 info.touhou_little_maid.maid.set_pos=§a§lMaid Pos: %d, %d, %d
+info.touhou_little_maid.portable_audio.playing=The song is already playing ~
+info.touhou_little_maid.portable_audio.404=This song does not exist, please check whether it is removed
 
 # Death
 death.touhou_little_maid.attack.danmaku.1=%1$s was killed by %2$s using danmaku
@@ -195,6 +217,7 @@ config.touhou_little_maid.misc_config.override_npc_render=Override NPC Render
 config.touhou_little_maid.misc_config.chair_cannot_change_model=Only creative player can change chair model
 config.touhou_little_maid.misc_config.chair_cannot_be_destroied=Only creative player can destroy chair
 config.touhou_little_maid.misc_config.danmaku_affected_by_fluid=Will the danmaku be affected by the fluid?
+config.touhou_little_maid.misc_config.give_guide_book_first=Give Guide Book?
 
 # Gashapon Config
 config.touhou_little_maid.gashapon_config=Gashapon Config
@@ -205,6 +228,11 @@ config.touhou_little_maid.gashapon_config.gashapon_weights_4=SSR Level Gashapon'
 config.touhou_little_maid.gashapon_config.gashapon_weights_3=SR Level Gashapon's Weights
 config.touhou_little_maid.gashapon_config.gashapon_weights_2=R Level Gashapon's Weights
 config.touhou_little_maid.gashapon_config.gashapon_weights_1=N Level Gashapon's Weights
+
+# Music Config
+config.touhou_little_maid.music_config=Music Config
+config.touhou_little_maid.music_config.player_name_reg=Player Name Reg
+config.touhou_little_maid.music_config.receive_music=Receive Music
 
 # Danmaku Type
 danmaku_type.touhou_little_maid.pellet=Pellet
@@ -243,6 +271,7 @@ task.touhou_little_maid.shears=Shears
 task.touhou_little_maid.milk=Milk
 task.touhou_little_maid.torch=Torch
 task.touhou_little_maid.feed_animal=Breed
+task.touhou_little_maid.extinguishing=Extinguishing
 
 # GUI
 gui.touhou_little_maid.info.healthy=HP: %f/%f
@@ -266,6 +295,7 @@ gui.touhou_little_maid.button.sound_credit=Open Sound Credit GUI
 gui.touhou_little_maid.button.pack_download=Open Maid Resources Pack Download GUI
 gui.touhou_little_maid.button.show_pos=Show Maid Pos
 gui.touhou_little_maid.button.clear_pos=Clear Maid Pos
+gui.touhou_little_maid.button.riding_set=Maid Riding Setting
 gui.touhou_little_maid.skin_details.close=Close
 gui.touhou_little_maid.skin_details.floor=Show/Hide Floor
 gui.touhou_little_maid.skin_details.return=Return
@@ -319,9 +349,30 @@ gui.touhou_little_maid.resources_download.license=License: %s
 gui.touhou_little_maid.resources_download.fail.1=There seems to be something wrong with the network...
 gui.touhou_little_maid.resources_download.fail.2=Please click on the top left button and wait a few seconds
 gui.touhou_little_maid.resources_download.reload=Reload
+gui.touhou_little_maid.resources_download.tab.0=All Resources Pack
+gui.touhou_little_maid.resources_download.tab.1=Maid Resources Pack
+gui.touhou_little_maid.resources_download.tab.2=Chair Resources Pack
+gui.touhou_little_maid.resources_download.tab.3=Sound Resources Pack
+gui.touhou_little_maid.resources_download.open_resources_gui=Open Resources Gui
 gui.touhou_little_maid.inventory.scroll.desc=Please slide the mouse wheel to scroll the inventory.
 gui.touhou_little_maid.animation_choose.file_filter.description=JavaScript File
 gui.touhou_little_maid.compass.close=Close
+gui.touhou_little_maid.scarecrow_gui.name.desc=The name of the player skin you want to use:
+gui.touhou_little_maid.scarecrow_gui.text.desc=The display text on the scarecrow brand:
+gui.touhou_little_maid.portable_audio.song_id.illegal=ID Illegal
+gui.touhou_little_maid.portable_audio.play_list.importer=Importer: %s
+gui.touhou_little_maid.portable_audio.play_list.name=§c§l[LIST] §6§l%s
+gui.touhou_little_maid.portable_audio.play_list.creator=%s %s Create
+gui.touhou_little_maid.portable_audio.play_list.track_count=Track
+gui.touhou_little_maid.portable_audio.play_list.play_count=Play
+gui.touhou_little_maid.portable_audio.play_list.tags=Tags: §9%s
+gui.touhou_little_maid.portable_audio.play_list.description=Description: %s
+gui.touhou_little_maid.portable_audio.play_list.loading_situation=§nSchedule: %d/%d
+gui.touhou_little_maid.portable_audio.track.name=Track Name
+gui.touhou_little_maid.portable_audio.track.artists=Artists
+gui.touhou_little_maid.portable_audio.track.album=Album
+gui.touhou_little_maid.portable_audio.track.duration=Time
+gui.touhou_little_maid.portable_audio.play_list.empty=The mod detects that the NetEase Cloud Music playlist is empty. The reasons may be as follows:\n\n- NetEase Cloud Music is not open for use in your region\n- Your current network environment cannot connect to NetEase Cloud Music server\n- Netease Cloud Music blocks the IP you use\n- Other unknown network issues\n\nCurrently, only NetEase Cloud Music is supported, so only players from China Mainland can use it, we apologize for this.\nHowever, we will add more support from other music websites in the future, so stay tuned.\n\nPlease note: This is a network problem between you and NetEase Cloud Music, not a mod bug!\n\n[Press Esc to exit this interface]
 
 # Skin Gui
 gui.touhou_little_maid.skin.text.version=Version: %s
@@ -435,6 +486,29 @@ model.touhou_little_maid.tsukumo_benben.name=Benben Tsukumo
 model.touhou_little_maid.hecatia_lapislazuli.name=Hecatia Lapislazuli
 model.touhou_little_maid.miyoi_okunoda.name=Miyoi Okunoda
 model.touhou_little_maid.yumemi_okazaki.name=Yumemi Okazaki
+model.touhou_little_maid.niwatari_kutaka.name=Kutaka Niwatari
+model.touhou_little_maid.clownpiece.name=Clownpiece
+model.touhou_little_maid.doremy_sweet.name=Doremy Sweet
+model.touhou_little_maid.ebisu_eika.name=Eika Ebisu
+model.touhou_little_maid.eternity_larva.name=Eternity Larva
+model.touhou_little_maid.hieda_no_akyuu.name=Hieda no Akyuu
+model.touhou_little_maid.himekaidou_hatate.name=Hatate Himekaidou
+model.touhou_little_maid.ibaraki_kasen.name=Kasen Ibaraki
+model.touhou_little_maid.joutougu_mayumi.name=Mayumi Joutouguu
+model.touhou_little_maid.komano_aunn.name=Aunn Komano
+model.touhou_little_maid.kurokoma_saki.name=Saki Kurokoma
+model.touhou_little_maid.maribel_hearn.name=Maribel Hearn
+model.touhou_little_maid.motoori_kosuzu.name=Kosuzu Motoori
+model.touhou_little_maid.nishida_satono.name=Satono Nishida
+model.touhou_little_maid.sakata_nemuno.name=Nemuno Sakata
+model.touhou_little_maid.teireid_mai.name=Mai Teireida
+model.touhou_little_maid.tokiko.name=Tokiko
+model.touhou_little_maid.usami_renko.name=Renko Usami
+model.touhou_little_maid.usami_sumireko.name=Sumireko Usami
+model.touhou_little_maid.ushizaki_urumi.name=Urumi Ushizaki
+model.touhou_little_maid.watatsuki_no_toyohime.name=Watatsuki no Toyohime
+model.touhou_little_maid.watatsuki_no_yorihime.name=Watatsuki no Yorihime
+model.touhou_little_maid.yorigami_jyoon.name=Joon Yorigami
 
 model.touhou_little_maid.hakurei_reimu.desc=§7Shrine Maiden of Paradise
 model.touhou_little_maid.yakumo_ran.desc=§7Shikigami of the Gap Youkai
@@ -530,6 +604,29 @@ model.touhou_little_maid.tsukumo_benben.desc=§7Tsukumogami of an Aging Biwa
 model.touhou_little_maid.hecatia_lapislazuli.desc=§7Goddess of Hell
 model.touhou_little_maid.miyoi_okunoda.desc=§7The Poster Girl of Geidontei, the Fantasy Pub
 model.touhou_little_maid.yumemi_okazaki.desc=§7Fantasy Legend
+model.touhou_little_maid.niwatari_kutaka.desc=§7Clerical God of Hell's Checkpoint
+model.touhou_little_maid.clownpiece.desc=§7Fairy of Hell
+model.touhou_little_maid.doremy_sweet.desc=§7Ruler of Dreams
+model.touhou_little_maid.ebisu_eika.desc=§7Stillborn Idol of the Riverbed
+model.touhou_little_maid.eternity_larva.desc=§7The Butterfly Fairy who Approaches God
+model.touhou_little_maid.hieda_no_akyuu.desc=§7Memory of Gensokyo
+model.touhou_little_maid.himekaidou_hatate.desc=§7Modern-Day Spirit Photography Reporter
+model.touhou_little_maid.ibaraki_kasen.desc=§7The One-Armed, Horned Hermit
+model.touhou_little_maid.joutougu_mayumi.desc=§7Haniwa Lance Corporal
+model.touhou_little_maid.komano_aunn.desc=§7The Guardian Beast Devoted to Shintoism and Buddhism
+model.touhou_little_maid.kurokoma_saki.desc=§7Matriarch of the Keiga Family
+model.touhou_little_maid.maribel_hearn.desc=§7-
+model.touhou_little_maid.motoori_kosuzu.desc=§7Bibliophile with a Deciphering Eye
+model.touhou_little_maid.nishida_satono.desc=§7The All-Too-Dangerous Backup Dancers
+model.touhou_little_maid.sakata_nemuno.desc=§7The Yamanba who Surpasses This Floating World's Barriers
+model.touhou_little_maid.teireid_mai.desc=§7The All-Too-Dangerous Backup Dancers
+model.touhou_little_maid.tokiko.desc=§7-
+model.touhou_little_maid.usami_renko.desc=§7-
+model.touhou_little_maid.usami_sumireko.desc=§7Expose the Esoteric! The Secret Sealing Club's First President
+model.touhou_little_maid.ushizaki_urumi.desc=§7Parental Guardian of Ancient Fish
+model.touhou_little_maid.watatsuki_no_toyohime.desc=§7The Moon Princess Connecting Sea and Mountain
+model.touhou_little_maid.watatsuki_no_yorihime.desc=§7The Moon Princess Possessed by Divine Spirits
+model.touhou_little_maid.yorigami_jyoon.desc=§7The Most-Despicable and Disastrous Younger Twin Sister
 
 model.touhou_little_maid.cushion.name=Cushion
 model.touhou_little_maid.class_desk.name=Class Desk
@@ -578,6 +675,7 @@ subtitle.touhou_little_maid.maid.mode.shears=Maid Shears Sound
 subtitle.touhou_little_maid.maid.mode.milk=Maid Get Milk Sound
 subtitle.touhou_little_maid.maid.mode.torch=Maid Torch Sound
 subtitle.touhou_little_maid.maid.mode.feed_animal=Maid Feed Animal Sound
+subtitle.touhou_little_maid.maid.mode.extinguishing=Extinguishing Sound
 subtitle.touhou_little_maid.maid.ai.find_target=Maid Find Target Sound
 subtitle.touhou_little_maid.maid.ai.hurt=Maid Hurt Sound
 subtitle.touhou_little_maid.maid.ai.hurt_fire=Maid Fire Hurt Sound
@@ -600,6 +698,7 @@ subtitle.touhou_little_maid.monster.rinnosuke_death=Rinnosuke Death Sound
 subtitle.touhou_little_maid.monster.rinnosuke_hurt=Rinnosuke Hurt Sound
 subtitle.touhou_little_maid.entity.box=Box Open Sound
 subtitle.touhou_little_maid.item.compass=Compass Select Point Sound
+subtitle.touhou_little_maid.item.portable_audio=Audio Music Sound
 
 # HWYLA & The One Probe
 hwyla.touhou_little_maid.entity_maid.task=Mode: %s

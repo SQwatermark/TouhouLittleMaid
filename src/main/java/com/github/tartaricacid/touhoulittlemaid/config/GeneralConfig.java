@@ -32,6 +32,10 @@ public class GeneralConfig {
     @Config.Name("GashaponConfig")
     public static GashaponConfig GASHAPON_CONFIG = new GashaponConfig();
 
+    @Config.LangKey("config.touhou_little_maid.music_config")
+    @Config.Name("MusicConfig")
+    public static MusicConfig MUSIC_CONFIG = new MusicConfig();
+
     public static class MaidConfig {
         @Config.Comment("The item that can tamed maid")
         @Config.LangKey("config.touhou_little_maid.maid_config.maid_tamed_item")
@@ -180,6 +184,11 @@ public class GeneralConfig {
         @Config.LangKey("config.touhou_little_maid.misc_config.danmaku_affected_by_fluid")
         @Config.Name("DanmakuAffectedByFluid")
         public boolean danmakuAffectedByFluid = true;
+
+        @Config.Comment("Whether to give guide book when entering the game for the first time?")
+        @Config.LangKey("config.touhou_little_maid.misc_config.give_guide_book_first")
+        @Config.Name("GiveGuideBookFirst")
+        public boolean giveGuideBookFirst = true;
     }
 
     public static class GashaponConfig {
@@ -223,6 +232,18 @@ public class GeneralConfig {
         @Config.Name("GashaponWeights1")
         @Config.RangeInt(min = 0)
         public int gashaponWeights1 = 50;
+    }
+
+    public static class MusicConfig {
+        @Config.Comment("Players who match this reg can send music messages")
+        @Config.LangKey("config.touhou_little_maid.music_config.player_name_reg")
+        @Config.Name("PlayerNameReg")
+        public String playerNameReg = ".*";
+
+        @Config.Comment("Receive music information from the server?")
+        @Config.LangKey("config.touhou_little_maid.music_config.receive_music")
+        @Config.Name("ReceiveMusic")
+        public Boolean receiveMusic = true;
     }
 
     /**

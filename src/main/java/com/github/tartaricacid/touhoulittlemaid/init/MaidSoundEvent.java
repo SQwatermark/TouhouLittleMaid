@@ -28,6 +28,7 @@ public final class MaidSoundEvent {
     public static final SoundEvent MAID_MILK = registerSound("maid.mode.milk");
     public static final SoundEvent MAID_TORCH = registerSound("maid.mode.torch");
     public static final SoundEvent MAID_FEED_ANIMAL = registerSound("maid.mode.feed_animal");
+    public static final SoundEvent MAID_EXTINGUISHING = registerSound("maid.mode.extinguishing");
     public static final SoundEvent MAID_FIND_TARGET = registerSound("maid.ai.find_target");
     public static final SoundEvent MAID_HURT = registerSound("maid.ai.hurt");
     public static final SoundEvent MAID_HURT_FIRE = registerSound("maid.ai.hurt_fire");
@@ -50,6 +51,7 @@ public final class MaidSoundEvent {
     public static final SoundEvent RINNOSUKE_HURT = registerSound("monster.rinnosuke_hurt");
     public static final SoundEvent BOX_OPEN = registerSound("entity.box");
     public static final SoundEvent COMPASS_POINT = registerSound("item.compass");
+    public static final SoundEvent PORTABLE_AUDIO = registerSound("item.portable_audio");
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<SoundEvent> event) {

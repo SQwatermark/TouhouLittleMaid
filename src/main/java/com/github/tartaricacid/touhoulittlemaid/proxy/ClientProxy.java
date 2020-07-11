@@ -1,6 +1,7 @@
 package com.github.tartaricacid.touhoulittlemaid.proxy;
 
 import com.github.tartaricacid.touhoulittlemaid.TouhouLittleMaid;
+import com.github.tartaricacid.touhoulittlemaid.client.audio.music.MusicManger;
 import com.github.tartaricacid.touhoulittlemaid.client.command.ReloadHataCommand;
 import com.github.tartaricacid.touhoulittlemaid.client.command.ReloadMaidResCommand;
 import com.github.tartaricacid.touhoulittlemaid.client.download.InfoGetManager;
@@ -13,14 +14,11 @@ import com.github.tartaricacid.touhoulittlemaid.entity.monster.EntityFairy;
 import com.github.tartaricacid.touhoulittlemaid.entity.monster.EntityRinnosuke;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.github.tartaricacid.touhoulittlemaid.entity.projectile.EntityDanmaku;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -40,15 +38,10 @@ import noppes.npcs.entity.EntityCustomNpc;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy implements ISelectiveResourceReloadListener {
-    /**
-     * 实体缓存，在客户端会大量运用实体渲染，这个缓存可以减少重复创建实体带来的性能问题
-     */
-    public static final Cache<String, Entity> ENTITY_CACHE = CacheBuilder.newBuilder().expireAfterAccess(5, TimeUnit.MINUTES).build();
     /**
      * 指物旗部分
      */
@@ -58,7 +51,12 @@ public class ClientProxy extends CommonProxy implements ISelectiveResourceReload
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
+
+        // 加载音乐歌单
+        MusicManger.loadMusicList();
+        // 加载游戏内资源包下载
         InfoGetManager.checkInfoJsonFile();
+
         OBJLoader.INSTANCE.addDomain(TouhouLittleMaid.MOD_ID);
         ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
         RenderingRegistry.registerEntityRenderingHandler(EntityMaid.class, EntityMaidRender.FACTORY);
@@ -75,6 +73,10 @@ public class ClientProxy extends CommonProxy implements ISelectiveResourceReload
         RenderingRegistry.registerEntityRenderingHandler(EntityBackpack.class, EntityBackpackRender.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityTrolleyAudio.class, EntityTrolleyAudioRender.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityMaidVehicle.class, EntityMaidVehicleRender.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityScarecrow.class, EntityScarecrowRender.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityPortableAudio.class, EntityPortableAudioRender.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityExtinguishingAgent.class, EntityExtinguishingAgentRender.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityThrowPowerPoint.class, EntityThrowPowerPointRender.FACTORY);
     }
 
     @Override
